@@ -76,7 +76,7 @@ services:
       # Nome do banco de dados, vindo do arquivo .env
       POSTGRES_DB: ${DB_NAME}
       # Usuário do banco, vindo do arquivo .env
-      POSTGRES_USER:  ${DB_USER}
+      POSTGRES_USER: ${DB_USER}
       # Senha do banco, vindo do arquivo .env
       POSTGRES_PASSWORD: ${DB_PASSWORD}
       # Define o fuso horário do container

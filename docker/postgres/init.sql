@@ -6,4 +6,4 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
 CREATE ROLE senac LOGIN PASSWORD 'senac';
 
-CREATE DATABASE senac_db OWNER senac;
+CREATE DATABASE willian_db OWNER senac;
