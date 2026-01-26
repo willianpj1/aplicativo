@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 use Phinx\Migration\AbstractMigration;
 
-final class PaymentCondition extends AbstractMigration
+final class Installment extends AbstractMigration
 {
     /**
      * Change Method.
@@ -19,11 +19,18 @@ final class PaymentCondition extends AbstractMigration
      */
     public function change()
     {
-        $table = $this->table('payment_condition', ['id' => false, 'primary_key' => ['id']]);
+        $table = $this->table('installment', ['id' => false, 'primary_key' => ['id']]);
 
         $table->addColumn('id', 'biginteger', ['identity' => true])
-            ->addColumn('descricao', 'text')
-            ->addColumn('quantidade_parcelas', 'integer')
+            ->addColumn('numero_parcela', 'integer')
+            ->addColumn('dias', 'integer')
+            ->addColumn('payment_condition_id', 'biginteger')
+
+            ->addIndex(['payment_condition_id'], ['name' => 'idx_installment_payment'])
+
+            ->addForeignKey('payment_condition_id', 'payment_condition', 'id', [
+                'constraint' => 'fk_installment_payment_condition'
+            ])
             ->create();
     }
 }
