@@ -21,7 +21,7 @@ return
             'development' => [
                 'adapter' => 'pgsql',
                 'host' => 'postgres',
-                'name' => 'senac_db',
+                'name' => 'development_db',
                 'user' => 'senac',
                 'pass' => 'senac',
                 'port' => '5432',
