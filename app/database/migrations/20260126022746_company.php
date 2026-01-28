@@ -15,7 +15,8 @@ final class Company extends AbstractMigration
             ->addColumn('nome_fantasia', 'text', ['null' => true])
             ->addColumn('cnpj', 'text')
             ->addColumn('ativo', 'boolean', ['default' => true])
-            ->addColumn('data_cadastro', 'datetime', ['default' => 'CURRENT_TIMESTAMP'])
+            ->addColumn('data_cadastro', 'datetime', ['null' => true, 'default' => 'CURRENT_TIMESTAMP'])
+            ->addColumn('data_atualizacao', 'datetime', ['null' => true, 'default' => 'CURRENT_TIMESTAMP'])
             ->create();
     }
 }

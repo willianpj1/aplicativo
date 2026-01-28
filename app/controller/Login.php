@@ -36,7 +36,7 @@ class Login extends Base
                 'rg' => $form['rg'],
                 'senha' => password_hash($form['senhaCadastro'], PASSWORD_DEFAULT)
             ];      
-            $IsInseted = InsertQuery::table('usuario')->save($dadosUsuario);
+            $IsInseted = InsertQuery::table('users')->save($dadosUsuario);
             if (!$IsInseted) {
                 return $this->SendJson(
                     $response,
@@ -45,33 +45,33 @@ class Login extends Base
                 );
             }
             #Captura o código do ultimo usuário cadastrado na tabela de usuário
-            $id = SelectQuery::select('id')->from('usuario')->order('id', 'desc')->fetch();
+            $id = SelectQuery::select('id')->from('users')->order('id', 'desc')->fetch();
             #Colocamos o ID do ultimo usuário cadastrado na varaivel $id_usuario.
-            $id_usuario = $id['id'];
+            $users_id = $id['id'];
             #Inserimos o e-mail
             $dadosContato = [
-                'id_usuario' => $id_usuario,
+                'id_usuario' => $users_id,
                 'tipo' => 'email',
                 'contato' => $form['email']
             ];
-            InsertQuery::table('contato')->save($dadosContato);
+            InsertQuery::table('contact')->save($dadosContato);
             $dadosContato = [];
             #Inserimos o celular
             $dadosContato = [
-                'id_usuario' => $id_usuario,
+                'users_id' => $users_id,
                 'tipo' => 'celular',
                 'contato' => $form['celular']
             ];
-            InsertQuery::table('contato')->save($dadosContato);
+            InsertQuery::table('contact')->save($dadosContato);
             $dadosContato = [];
             #Inserimos o WhastaApp
             $dadosContato = [
-                'id_usuario' => $id_usuario,
+                'users_id' => $users_id,
                 'tipo' => 'whatsapp',
                 'contato' => $form['whatsapp']
             ];
-            InsertQuery::table('contato')->save($dadosContato);
-            return $this->SendJson($response, ['status' => true, 'msg' => 'Cadastro realizado com sucesso!', 'id' => $id_usuario], 201);
+            InsertQuery::table('contact')->save($dadosContato);
+            return $this->SendJson($response, ['status' => true, 'msg' => 'Cadastro realizado com sucesso!', 'id' => $users_id], 201);
         } catch (\Exception $e) {
             return $this->SendJson($response, ['status' => true, 'msg' => 'Restrição: ' . $e->getMessage(), 'id' => 0], 500);
         }

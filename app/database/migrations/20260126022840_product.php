@@ -36,7 +36,7 @@ final class Product extends AbstractMigration
 
             // FK + CONSTRAINT
             ->addForeignKey('supplier_id', 'supplier', 'id', [
-                'constraint' => 'fk_product_supplier'
+                'delete' => 'CASCADE', 'update' => 'NO ACTION'
             ])
             ->create();
     }

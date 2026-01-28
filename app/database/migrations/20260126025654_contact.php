@@ -23,26 +23,33 @@ final class Contact extends AbstractMigration
 
         $table->addColumn('id', 'biginteger', ['identity' => true])
             ->addColumn('tipo', 'text')   // telefone, email
-            ->addColumn('valor', 'text')
+            ->addColumn('endereco_contato', 'text')
+            ->addColumn('data_cadastro', 'datetime', ['null' => true, 'default' => 'CURRENT_TIMESTAMP'])
+            ->addColumn('data_atualizacao', 'datetime', ['null' => true, 'default' => 'CURRENT_TIMESTAMP'])
 
             ->addColumn('company_id', 'biginteger', ['null' => true])
             ->addColumn('client_id', 'biginteger', ['null' => true])
             ->addColumn('supplier_id', 'biginteger', ['null' => true])
+            ->addColumn('users_id', 'biginteger', ['null' => true])
 
             // ÍNDICES
             ->addIndex(['company_id'], ['name' => 'idx_contact_company'])
             ->addIndex(['client_id'], ['name' => 'idx_contact_client'])
             ->addIndex(['supplier_id'], ['name' => 'idx_contact_supplier'])
+            ->addIndex(['users_id'], ['name' => 'idx_contact_users'])
 
             // FK + CONSTRAINT
             ->addForeignKey('company_id', 'company', 'id', [
-                'constraint' => 'fk_contact_company'
+                'delete' => 'CASCADE', 'update' => 'NO ACTION'
             ])
             ->addForeignKey('client_id', 'client', 'id', [
-                'constraint' => 'fk_contact_client'
+                'delete' => 'CASCADE', 'update' => 'NO ACTION'
             ])
             ->addForeignKey('supplier_id', 'supplier', 'id', [
-                'constraint' => 'fk_contact_supplier'
+                'delete' => 'CASCADE', 'update' => 'NO ACTION'
+            ])
+            ->addForeignKey('users_id', 'users', 'id', [
+                'delete' => 'CASCADE', 'update' => 'NO ACTION'
             ])
             ->create();
     }
