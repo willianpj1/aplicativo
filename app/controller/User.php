@@ -46,8 +46,7 @@ class User extends Base
     }
     public function listuser($request, $response)
     {
-        echo "entrou";
-        die;
+
         #Captura todas a variaveis de forma mais segura VARIAVEIS POST.
         $form = $request->getParsedBody();
         #Qual a coluna da tabela deve ser ordenada.
@@ -63,7 +62,7 @@ class User extends Base
             1 => 'nome',
             2 => 'sobrenome',
             3 => 'cpf',
-            4 => 'rg'            
+            4 => 'rg'
         ];
         #Capturamos o nome do capo a ser ordenado.
         $orderField = $fields[$order];

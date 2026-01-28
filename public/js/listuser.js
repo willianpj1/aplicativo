@@ -1,30 +1,9 @@
 
 import { Requests } from "./Requests.js";
-document.addEventListener('DOMContentLoaded', () => {
-    $('#users').DataTable();
-});
+import { DataTables } from "./DataTables.js";
 
-const tabela = new $('#tabela').DataTable({
-    paging: true,
-    lengthChange: true,
-    searching: true,
-    ordering: true,
-    info: true,
-    autoWidth: false,
-    responsive: true,
-    stateSave: true,
-    select: true,
-    processing: true,
-    serverSide: true,
-    language: {
-        url: 'https://cdn.datatables.net/plug-ins/1.13.4/i18n/pt-BR.json',
-        searchPlaceholder: 'Digite sua pesquisa...',
-    },
-    ajax: {
-        url: '/usuario/listuser',
-        type: 'POST'
-    }
-});
+DataTables.SetId('tabela').Post('/usuario/listuser');
+
 async function Delete(id) {
     document.getElementById('id').value = id;
     const response = await Requests.SetForm('form').Post('/usuario/delete');
