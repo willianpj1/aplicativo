@@ -46,6 +46,8 @@ class User extends Base
     }
     public function listuser($request, $response)
     {
+        echo "entrou";
+        die;
         #Captura todas a variaveis de forma mais segura VARIAVEIS POST.
         $form = $request->getParsedBody();
         #Qual a coluna da tabela deve ser ordenada.
@@ -67,11 +69,11 @@ class User extends Base
         $orderField = $fields[$order];
         #O termo pesquisado
         $term = $form['search']['value'];
-        $query = SelectQuery::select('id,nome,sobrenome,cpf')->from('usuario');
+        $query = SelectQuery::select('id,nome,sobrenome,cpf')->from('users');
         if (!is_null($term) && ($term !== '')) {
-            $query->where('usuario.nome', 'ilike', "%{$term}%", 'or')
-                ->where('usuario.sobrenome', 'ilike', "%{$term}%", 'or')
-                ->where('usuario.cpf', 'ilike', "%{$term}%");
+            $query->where('users.nome', 'ilike', "%{$term}%", 'or')
+                ->where('users.sobrenome', 'ilike', "%{$term}%", 'or')
+                ->where('users.cpf', 'ilike', "%{$term}%");
         }
         $users = $query
             ->order($orderField, $orderType)
@@ -112,12 +114,12 @@ class User extends Base
                 'sobrenome' => $form['sobrenome'],
                 'cpf' => $form['cpf'],
                 'rg' => $form['rg'],
-                'data_nascimento' => $form['data_nascimento'],
+                //'data_nascimento' => $form['data_nascimento'],
                 'senha' => password_hash($form['senha'], PASSWORD_DEFAULT),
                 #'ativo' => (isset($form['ativo']) and $form['ativo'] === 'true') ? true : false,
                 #'administrador' => (isset($form['administrador']) and $form['administrador'] === 'true') ? true : false
             ];
-            $IsInsert = InsertQuery::table('usuario')->save($FieldAndValues);
+            $IsInsert = InsertQuery::table('users')->save($FieldAndValues);
             if (!$IsInsert) {
                 $data = [
                     'status' => false,
@@ -131,7 +133,7 @@ class User extends Base
                     ->withStatus(200);
             }
 
-            $id = SelectQuery::select('id')->from('usuario')->order('id', 'desc')->fetch();
+            $id = SelectQuery::select('id')->from('users')->order('id', 'desc')->fetch();
 
             $data = [
                 'status' => true,
@@ -156,12 +158,12 @@ class User extends Base
                 'sobrenome' => $form['sobrenome'],
                 'cpf' => $form['cpf'],
                 'rg' => $form['rg'],
-                'data_nascimento' => $form['data_nascimento'],
+                //'data_nascimento' => $form['data_nascimento'],
                 'senha' => password_hash($form['senha'], PASSWORD_DEFAULT),
                 #'ativo' => (isset($form['ativo']) and $form['ativo'] === 'true') ? true : false,
                 #'administrador' => (isset($form['administrador']) and $form['administrador'] === 'true') ? true : false
             ];
-            $IsUpdate = UpdateQuery::table('usuario')->set($FieldAndValues)->where('id', '=', $id)->update();
+            $IsUpdate = UpdateQuery::table('users')->set($FieldAndValues)->where('id', '=', $id)->update();
             if (!$IsUpdate) {
                 $data = [
                     'status' => false,

@@ -16,3 +16,4 @@ $$;
 -- Bancos adicionais
 CREATE DATABASE testing_db OWNER senac;
 CREATE DATABASE production_db OWNER senac;
+CREATE DATABASE development_db OWNER senac;

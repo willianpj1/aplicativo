@@ -1,5 +1,9 @@
 
 import { Requests } from "./Requests.js";
+document.addEventListener('DOMContentLoaded', () => {
+    $('#users').DataTable();
+});
+
 const tabela = new $('#tabela').DataTable({
     paging: true,
     lengthChange: true,
