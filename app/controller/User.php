@@ -190,7 +190,7 @@ class User extends Base
     }
     public function print($request, $response)
     {
-        $html = $this->getHtml('reportuser', []);
-        return $this->print($html, 'lista_usuario.pdf');
+        $html = $this->getHtml('reportuser.html');
+        return $this->printer($html);
     }
 }

@@ -21,10 +21,10 @@ $app->group('/usuario', function (RouteCollectorProxy $group) {
     $group->get('/lista', User::class . ':lista');//->add(Middleware::authentication());
     $group->get('/cadastro', User::class . ':cadastro');//->add(Middleware::authentication());
     $group->get('/alterar/{id}', User::class . ':alterar');//->add(Middleware::authentication());
+    $group->post('/print', User::class . ':print');
     $group->post('/insert', User::class . ':insert');
     $group->post('/delete', User::class . ':delete');
     $group->post('/listuser', User::class . ':listuser');
-    $group->post('/print', User::class . ':print');
 
 });
 $app->group('/cliente', function (RouteCollectorProxy $group) {
