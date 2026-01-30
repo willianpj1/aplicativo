@@ -29,4 +29,16 @@ trait Template
     {
         return $name . EXT_VIEW;
     }
+    public function getHtml(string $templatename = '', array $data = []): string
+    {
+
+        $viewPath = DIR_VIEW . '/report/';
+        $safeData = is_array($data) ? $data : [];
+        $twig = Twig::create($viewPath,$safeData);
+        #remove erros de string
+        $html = $twig->fetch($templatename, $safeData);
+        $html = $twig('/>\s+</', '/><', $html);
+        return $html;
+
+    }
 }

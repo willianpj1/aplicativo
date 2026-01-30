@@ -188,4 +188,9 @@ class User extends Base
         } catch (\Exception $e) {
         }
     }
+    public function print($request, $response)
+    {
+        $html = $this->getHtml('reportuser', []);
+        return $this->print($html, 'lista_usuario.pdf');
+    }
 }

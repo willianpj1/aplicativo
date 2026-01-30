@@ -24,6 +24,7 @@ $app->group('/usuario', function (RouteCollectorProxy $group) {
     $group->post('/insert', User::class . ':insert');
     $group->post('/delete', User::class . ':delete');
     $group->post('/listuser', User::class . ':listuser');
+    $group->post('/print', User::class . ':print');
 
 });
 $app->group('/cliente', function (RouteCollectorProxy $group) {
