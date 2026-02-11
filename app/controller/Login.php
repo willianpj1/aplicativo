@@ -5,20 +5,14 @@ namespace app\controller;
 use app\database\builder\InsertQuery;
 use app\database\builder\SelectQuery;
 use app\database\builder\UpdateQuery;
-<<<<<<< Updated upstream
-=======
 use app\source\Email;
->>>>>>> Stashed changes
 
 class Login extends Base
 {
     public function login($request, $response)
     {
         try {
-<<<<<<< Updated upstream
-=======
 
->>>>>>> Stashed changes
             $dadosTemplate = [
                 'titulo' => 'Autenticação'
             ];
@@ -31,15 +25,6 @@ class Login extends Base
             die;
         }
     }
-<<<<<<< Updated upstream
-    public function precadastro($request, $response)
-    {
-        try {   
-            #Captura os dados do form
-            $form = $request->getParsedBody();
-            #Capturar os dados do usuário.
-            $dadosUsuario = [
-=======
 
     public function precadastro($request, $response)
     {
@@ -48,79 +33,23 @@ class Login extends Base
             $form = $request->getParsedBody();
             #Capturar os dados do usuário.
             $dadosusers = [
->>>>>>> Stashed changes
                 'nome' => $form['nome'],
                 'sobrenome' => $form['sobrenome'],
                 'cpf' => $form['cpf'],
                 'rg' => $form['rg'],
                 'senha' => password_hash($form['senhaCadastro'], PASSWORD_DEFAULT)
-<<<<<<< Updated upstream
-            ];      
-            $IsInseted = InsertQuery::table('users')->save($dadosUsuario);
-            if (!$IsInseted) {
-                return $this->SendJson(
-                    $response,
-                    ['status' => false, 'msg' => 'Restrição: ' . $IsInseted, 'id' => 0],
-=======
             ];
             $IsInseted = InsertQuery::table('users')->save($dadosusers);
             if (!$IsInseted) {
                 return $this->SendJson(
                     $response,
                     ['status' => false, 'msg' => 'Erro ao inserir usuário', 'id' => 0],
->>>>>>> Stashed changes
                     403
                 );
             }
             #Captura o código do ultimo usuário cadastrado na tabela de usuário
             $id = SelectQuery::select('id')->from('users')->order('id', 'desc')->fetch();
             #Colocamos o ID do ultimo usuário cadastrado na varaivel $id_usuario.
-<<<<<<< Updated upstream
-            $users_id = $id['id'];
-            #Inserimos o e-mail
-            $dadosContato = [
-                'id_usuario' => $users_id,
-                'tipo' => 'email',
-                'contato' => $form['email']
-            ];
-            InsertQuery::table('contact')->save($dadosContato);
-            $dadosContato = [];
-            #Inserimos o celular
-            $dadosContato = [
-                'users_id' => $users_id,
-                'tipo' => 'celular',
-                'contato' => $form['celular']
-            ];
-            InsertQuery::table('contact')->save($dadosContato);
-            $dadosContato = [];
-            #Inserimos o WhastaApp
-            $dadosContato = [
-                'users_id' => $users_id,
-                'tipo' => 'whatsapp',
-                'contato' => $form['whatsapp']
-            ];
-            InsertQuery::table('contact')->save($dadosContato);
-            return $this->SendJson($response, ['status' => true, 'msg' => 'Cadastro realizado com sucesso!', 'id' => $users_id], 201);
-        } catch (\Exception $e) {
-            return $this->SendJson($response, ['status' => true, 'msg' => 'Restrição: ' . $e->getMessage(), 'id' => 0], 500);
-        }
-    }
-    public function autenticar($request, $response)
-    {
-        try {
-            #Captura os dados do form
-            $form = $request->getParsedBody();
-            #Caso a posição login não exista, informa a ocorrencia de erro.
-            if (!isset($form['login']) || empty($form['login'])) {
-                return $this->SendJson($response, ['status' => false, 'msg' => 'Por favor informe o login', 'id' => 0], 403);
-            }
-            #Caso a posição login não exista, informa a ocorrencia de erro.
-            if (!isset($form['senha']) || empty($form['senha'])) {
-                return $this->SendJson($response, ['status' => false, 'msg' => 'Por favor informe o senha', 'id' => 0], 403);
-            }
-            $user = SelectQuery::select()
-                ->from('vw_usuario_contatos')
-=======
             $id_users = $id['id'];
             #Finalizar o pré-cadastro.
             #Cadastrar todos os contatos: E-mail, Celular, WhastaApp.
@@ -168,7 +97,6 @@ class Login extends Base
             }
             $user = SelectQuery::select()
                 ->from('vw_users_contatos')
->>>>>>> Stashed changes
                 ->where('cpf', '=', $form['login'], 'or')
                 ->where('email', '=', $form['login'], 'or')
                 ->where('celular', '=', $form['login'], 'or')
@@ -184,11 +112,7 @@ class Login extends Base
             if (!$user['ativo']) {
                 return $this->SendJson(
                     $response,
-<<<<<<< Updated upstream
-                    ['status' => false, 'msg' => 'Por enquanto você ainda não tem permissão de acessar o sistema!', 'id' => 0],
-=======
                     ['status' => false, 'msg' => 'Por enquanto você ainda não tem permissão de acessar o sistema!', 'id' => $user['id']],
->>>>>>> Stashed changes
                     403
                 );
             }
@@ -199,46 +123,16 @@ class Login extends Base
                     403
                 );
             }
-<<<<<<< Updated upstream
-
-            if (password_needs_rehash($user['senha'], PASSWORD_DEFAULT)) {
-                UpdateQuery::table('usuario')->set(['senha' => password_hash($form['senha'], PASSWORD_DEFAULT)])->where('id', '=', $user['id'])->update();
-            }
-
-            $_SESSION['usuario'] = [
-=======
             if (password_needs_rehash($user['senha'], PASSWORD_DEFAULT)) {
                 UpdateQuery::table('users')->set(['senha' => password_hash($form['senha'], PASSWORD_DEFAULT)])->where('id', '=', $user['id'])->update();
             }
             #Criar a sessão do usuário.
             $_SESSION['users'] = [
->>>>>>> Stashed changes
                 'id' => $user['id'],
                 'nome' => $user['nome'],
                 'sobrenome' => $user['sobrenome'],
                 'cpf' => $user['cpf'],
                 'rg' => $user['rg'],
-<<<<<<< Updated upstream
-                'ativo' => $user['ativo'],
-                'logado' => true,
-                'administrador' => $user['administrador'],
-                'celular' => $user['celular'],
-                'email' => $user['email'],
-                'whatsapp' => $user['whatsapp'],
-                'data_cadastro' => $user['data_cadastro'],
-                'data_alteracao' => $user['data_alteracao'],
-            ];
-
-            return $this->SendJson(
-                $response,
-                ['status' => true, 'msg' => 'Seja bem-vindo de volta!', 'id' => $user['id']],
-                200
-            );
-        } catch (\Exception $e) {
-            return $this->SendJson($response, ['status' => false, 'msg' => 'Restrição: ' . $e->getMessage(), 'id' => 0], 500);
-        }
-    }
-=======
                 'senha' => $user['senha'],
                 'ativo' => $user['ativo'],
                 'logado' => true
@@ -389,5 +283,4 @@ class Login extends Base
             return $this->SendJson($response, ['status' => false, 'msg' => 'Restrição:' . $e->getMessage(), 'id' => 0], 500);
         }
     }
->>>>>>> Stashed changes
 }

@@ -37,8 +37,4 @@ class InsertQuery
             throw new \Exception($e->getMessage());
         }
     }
-<<<<<<< Updated upstream
 }
-=======
-}
->>>>>>> Stashed changes

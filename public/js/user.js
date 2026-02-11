@@ -1,31 +1,5 @@
 import { Validate } from "./Validate.js";
 import { Requests } from "./Requests.js";
-<<<<<<< Updated upstream
-const Salvar = document.getElementById('insert');
-
-$('#cpf').inputmask({ "mask": ["999.999.999-99", "99.999.999/9999-99"] });
-$('#tel').inputmask({ "mask": ["(99) 99999-9999"] });
-
-Salvar.addEventListener('click', async () => {
-    Validate.SetForm('form').Validate();
-    const response = await Requests.SetForm('form').Post('/usuario/insert');
-    console.log(response);
-    if (!response.status) {
-        Swal.fire({
-            icon: "error",
-            title: "Eita patrão!",
-            text: response.msg,
-        });
-        return
-    }
-
-    Swal.fire({
-        title: "Cadastro realizado com sucesso!",
-        icon: "success",
-        draggable: true
-    });
-
-=======
 
 const InsertButton = document.getElementById('insert');
 const FieldPassword = document.getElementById('campo_senha');
@@ -144,5 +118,4 @@ InsertButton.addEventListener('click', async () => {
 });
 document.addEventListener('DOMContentLoaded', async () => {
     (Action.value === 'c') ? FieldPassword.classList.remove('d-none') : FieldPassword.classList.add('d-none');
->>>>>>> Stashed changes
 });

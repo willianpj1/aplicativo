@@ -1,19 +1,3 @@
-<<<<<<< Updated upstream
-
-import { Requests } from "./Requests.js";
-import { DataTables } from "./DataTables.js";
-
-DataTables.SetId('tabela').Post('/usuario/listuser');
-
-async function Delete(id) {
-    document.getElementById('id').value = id;
-    const response = await Requests.SetForm('form').Post('/usuario/delete');
-    if (!response.status) {
-        Swal.fire({
-            title: "Erro ao remover!",
-            icon: "error",
-            html: response.msg,
-=======
 import { DataTables } from "./DataTables.js";
 
 const tabela = new $("#tabela").DataTable({
@@ -94,7 +78,6 @@ async function Delete(id) {
             title: "Erro ao remover!",
             icon: "error",
             html: data.msg,
->>>>>>> Stashed changes
             timer: 3000,
             timerProgressBar: true,
             didOpen: () => {
@@ -106,11 +89,7 @@ async function Delete(id) {
     Swal.fire({
         title: "Removido com sucesso!",
         icon: "success",
-<<<<<<< Updated upstream
-        html: response.msg,
-=======
         html: data.msg,
->>>>>>> Stashed changes
         timer: 3000,
         timerProgressBar: true,
         didOpen: () => {
@@ -120,7 +99,4 @@ async function Delete(id) {
     tabela.ajax.reload();
 }
 window.Delete = Delete;
-<<<<<<< Updated upstream
-=======
 DataTables.SetId('tabela').Post('/user/listuser');
->>>>>>> Stashed changes

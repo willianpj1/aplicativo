@@ -33,16 +33,12 @@ class SelectQuery
         if (str_contains($placeholder, '.')) {
             $placeholder = substr($field, strpos($field, '.') + 1);
         }
-<<<<<<< Updated upstream
-        $this->where[] = "{$field}  {$operator} :{$placeholder} {$logic}";
-=======
         if ($logic) {
     $this->where[] = "{$field} {$operator} :{$placeholder} {$logic}";
 } else {
     $this->where[] = "{$field} {$operator} :{$placeholder}";
 }
 
->>>>>>> Stashed changes
         $this->binds[$placeholder] = $value;
         return $this;
     }
@@ -58,8 +54,6 @@ class SelectQuery
         $this->limits = " limit {$this->limit} offset {$this->offset} ";
         return $this;
     }
-<<<<<<< Updated upstream
-=======
     public function whereRaw(string $raw, ?string $logic = null): self
 {
     if ($logic) {
@@ -70,7 +64,6 @@ class SelectQuery
     return $this;
 }
 
->>>>>>> Stashed changes
     private function createQuery(): string
     {
         if (!$this->fields) {

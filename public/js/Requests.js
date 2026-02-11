@@ -7,18 +7,6 @@ class Requests {
         }
         return this;
     }
-<<<<<<< Updated upstream
-    static async Post(url) {
-        const formData = new FormData(this.form);
-        const option = {
-            method: 'POST',
-            body: formData,
-            cache: 'default',
-            mode: 'cors'
-        };
-        const response = await fetch(url, option);
-        return await response.json();
-=======
     
     static async Post(url) {
         try {
@@ -74,7 +62,6 @@ class Requests {
             console.error('Erro em Requests.Post:', error);
             throw error;
         }
->>>>>>> Stashed changes
     }
 }
 export { Requests };

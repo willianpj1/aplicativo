@@ -11,46 +11,16 @@ trait Template
         try {
             $twig = Twig::create(DIR_VIEW);
             #Adicionamos uma varaivel de template Global acessivel de qualquer template
-<<<<<<< Updated upstream
-            $twig->getEnvironment()->addGlobal('EMPRESA', 'Willian_Tech-2.0');
-=======
             $twig->getEnvironment()->addGlobal('EMPRESA', 'Gambiarra&CIA');
->>>>>>> Stashed changes
             return $twig;
         } catch (\Exception $e) {
             throw new \Exception("Restrição: " . $e->getMessage());
         }
     }
-<<<<<<< Updated upstream
-    public function SendJson($response, $data, $status = 200)
-    {
-        $payload = json_encode($data);
-        $response->getBody()->write($payload);
-        return $response
-            ->withHeader('Content-Type', 'application/json')
-            ->withStatus($status);
-    }
-=======
->>>>>>> Stashed changes
     public function setView($name)
     {
         return $name . EXT_VIEW;
     }
-<<<<<<< Updated upstream
-    public function getHtml(string $templatename = '', array $data = []): string
-    {
-
-        $viewPath = DIR_VIEW . '/report/';
-        $safeData = is_array($data) ? $data : [];
-        $twig = Twig::create($viewPath,$safeData);
-        #remove erros de string
-        $html = $twig->fetch($templatename, $safeData);
-        $html = $twig('/>\s+</', '/><', $html);
-        return $html;
-
-    }
-}
-=======
     public function SendJson($response, array $data = [], int $statusCode = 200)
     {
         #Converte o arrya do PHP para formato JSON
@@ -74,4 +44,3 @@ trait Template
         return $html;
     }
 }
->>>>>>> Stashed changes

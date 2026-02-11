@@ -10,16 +10,6 @@ define('DIR_VIEW', ROOT . '/app/view');
 #$_SERVER['REQUEST_SCHEME'] : Indica o protocolo usado na requisição atual. podendo ser http ou https
 #Criamos uma constante chamada HOME que guarda automaticamente o endereço principal do site.
 define('HOME', $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST']);
-<<<<<<< Updated upstream
-define('CONFIG_SMTP_EMAIL', [
-    'host' => 'smtp.titan.email',
-    'port' => 587,
-    'user' => 'noreplay@mkt.fanorte.edu.br',
-    'passwd' => '@w906083W@',
-    'from_name' => 'Mercantor',
-    'from_email' => 'noreplay@mkt.fanorte.edu.br'
-]);
-=======
 #Configurações E-mail
 define('CONFIG_SMTP_EMAIL',[
     'host' => 'smtp.titan.email',
@@ -29,4 +19,3 @@ define('CONFIG_SMTP_EMAIL',[
     'from_name' => 'Mercantor',
     'from_email' => 'noreply@mkt.fanorte.edu.br',
     ]);
->>>>>>> Stashed changes
