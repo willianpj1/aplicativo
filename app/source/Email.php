@@ -5,13 +5,22 @@ namespace app\source;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
+<<<<<<< Updated upstream
 class Email 
 {    
+=======
+class Email
+{
+>>>>>>> Stashed changes
     private $mail;
     private array $data;
     private $error;
     public function __construct() 
+<<<<<<< Updated upstream
     {
+=======
+    { 
+>>>>>>> Stashed changes
         $this->data = [];
         $this->mail = new PHPMailer(true);
         $this->mail->isSMTP();
@@ -24,6 +33,10 @@ class Email
         $this->mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
         $this->mail->Port = CONFIG_SMTP_EMAIL['port'];
     }
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
     public static function add(string $subject, string $body, string $recipient_name, string $recipient_email): self
     {
         $self = new self();
@@ -32,34 +45,66 @@ class Email
         $self->data['recipient_name'] = $recipient_name;
         $self->data['recipient_email'] = $recipient_email;
         return $self;
+<<<<<<< Updated upstream
+=======
+      
+>>>>>>> Stashed changes
     }
     public function attach(string $filePath, string $fileName): self
     {
         $this->data['attach'][$filePath] = $fileName;
+<<<<<<< Updated upstream
         return $this;
     }
     public function send(string $from_name = CONFIG_SMTP_EMAIL['from_name'], string $from_email = CONFIG_SMTP_EMAIL ['from_email']): bool 
+=======
+        return $this; 
+    }
+    public function send(string $from_name = CONFIG_SMTP_EMAIL['from_name'],string $from_email = CONFIG_SMTP_EMAIL['from_email']): bool
+>>>>>>> Stashed changes
     {
         try {
             $this->mail->setFrom($from_email, $from_name);
             $this->mail->addAddress($this->data['recipient_email'], $this->data['recipient_name']);
             $this->mail->Subject = $this->data['subject'];
+<<<<<<< Updated upstream
             $this->mail->Body = $this->data['body'];            
             if (!empty($this->data['attach']))  {
+=======
+            $this->mail->Body = $this->data['body'];
+            if (!empty($this->data['attach'])) {
+>>>>>>> Stashed changes
                 foreach ($this->data['attach'] as $path => $name) {
                     $this->mail->addAttachment($path, $name);
                 }
             }
             $this->mail->send();
+<<<<<<< Updated upstream
         } catch (Exception $e) {
             $this->error = $e;
             return false;
             
         }
         return true;
+=======
+            return true;
+        } catch (Exception $e) {
+            $this->error = $e;
+            return false; 
+        }
+
+
+
+        return true; 
+>>>>>>> Stashed changes
     }
     public function error(): ?\Exception
     {
         return $this->error;
     }
+<<<<<<< Updated upstream
 }
+=======
+
+}
+>>>>>>> Stashed changes

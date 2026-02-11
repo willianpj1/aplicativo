@@ -58,7 +58,11 @@ class DeleteQuery
         return $query;
     }
     # $query A SQL gerada para execução.
+<<<<<<< Updated upstream
     # Retorna true se a execução foi bem-sucedida.
+=======
+    # Retorna true se a execução foi bem-sucedida e pelo menos uma linha foi afetada.
+>>>>>>> Stashed changes
     public function executeQuery($query)
     {
         # Obtém a conexão com o banco de dados via PDO
@@ -68,7 +72,14 @@ class DeleteQuery
         $prepare = $connection->prepare($query);
 
         # Executa a query com os valores vinculados (binds)
+<<<<<<< Updated upstream
         return $prepare->execute($this->binds ?? []);
+=======
+        $result = $prepare->execute($this->binds ?? []);
+        
+        # Retorna true apenas se executou com sucesso e afetou pelo menos uma linha
+        return $result && $prepare->rowCount() > 0;
+>>>>>>> Stashed changes
     }
     #Método principal que monta e executa a query DELETE.
     #true em caso de sucesso, ou lança exceção se falhar.
@@ -84,4 +95,8 @@ class DeleteQuery
             throw new \Exception("Restrição: {$e->getMessage()}");
         }
     }
+<<<<<<< Updated upstream
 }
+=======
+}
+>>>>>>> Stashed changes
