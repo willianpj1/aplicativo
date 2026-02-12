@@ -7,7 +7,7 @@ use app\database\builder\SelectQuery;
 use app\database\builder\InsertQuery;
 use app\database\builder\UpdateQuery;
 
-class Product extends Base
+class Produto extends Base
 {
 
     public function lista($request, $response)
@@ -17,7 +17,7 @@ class Product extends Base
         ];
 
         return $this->getTwig()
-            ->render($response, $this->setView('listproduct'), $dadosTemplate)
+            ->render($response, $this->setView('listproduto'), $dadosTemplate)
             ->withHeader('Content-Type', 'text/html')
             ->withStatus(200);
     }
@@ -42,15 +42,24 @@ class Product extends Base
             ->withHeader('Content-Type', 'text/html')
             ->withStatus(200);
     }
-    public function listproductdata($request, $response)
+      public function listproductdata($request, $response)
     {
         $form = $request->getParsedBody();
         $term = $form['term'] ?? null;
         $query = SelectQuery::select('id, codigo_barra, nome')->from('product');
-        $data['results'] = [];
         if ($term != null) {
+            $query->where('codigo_barra', 'ILIKE', "%{$term}%", 'or')
+                ->where('nome', 'ILIKE', "%{$term}%");
         }
-        $data['results'] = $query->fetchAll();
+        $data = [];
+        $results = $query->fetchAll();
+        foreach ($results as $key => $item) {
+            $data['results'][$key] = [
+                'id' => $item['id'],
+                'text' => $item['nome'] . ' - Cód. barra: ' . $item['codigo_barra']
+            ];
+        }
+        #$data['pagination'] = ['more' => true];
         return $this->SendJson($response, $data);
     }
     public function alterar($request, $response, $args)

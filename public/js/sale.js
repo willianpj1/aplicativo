@@ -1,7 +1,7 @@
-import { Validate } from "./Validate";
-import { Request } from "./Request";
+import { Validate } from "./Validate.js";
 
 const insertItemButton = document.getElementById('insertItemButton');
+
 // Atualizar relógio em tempo real
 function updateClock() {
     const now = new Date();
