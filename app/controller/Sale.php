@@ -1,17 +1,17 @@
 <?php
 
 namespace app\controller;
-use app\database\builder\DeleteQuery;
-use app\database\builder\SelectQuery;
+
 use app\database\builder\InsertQuery;
-use app\database\builder\UpdateQuery;
+use app\database\builder\SelectQuery;
 
 class Sale extends Base
 {
     public function cadastro($request, $response)
     {
         $dadosTemplate = [
-            'titulo' => 'Página inicial'
+            'titulo' => 'Página inicial',
+            'acao' => 'c'
         ];
         return $this->getTwig()
             ->render($response, $this->setView('sale'), $dadosTemplate)
@@ -30,21 +30,35 @@ class Sale extends Base
     }
     public function insert($request, $response)
     {
-        $data = $request->getParsedBody();
-        $id_produto = $data['pesquisa'];
-        if (empty($id_produto) or  is_null($id_produto)) {
-            return $this->SendJson($response, ['status' => false,'msg' => 'Produto não encontrado'], 400);
+        #captura os dados do formulário
+        $form = $request->getParsedBody();
+        #Captura o id do produto
+        $id_produto = $form['pesquisa'];
+        #Verificar se o id do produto esta vasio ou nulo
+        if (empty($id_produto) or is_null($id_produto)) {
+            return $this->SendJson($response, [
+                'status' => false,
+                'msg' => 'Restrição: O ID do produto é obrigatório!',
+                'id' => 0
+            ], 403);
         }
+        #seleciona o id do cliente CONSUMIDOR FINAL para inserir a venda
         $customer = SelectQuery::select('id')
-            ->from('product')
-            ->order('id', 'desc')
+            ->from('customer')
+            ->order('id', 'asc')
             ->limit(1)
             ->fetch();
+        #Verificar se o cliente não foi encontrado
         if (!$customer) {
-            return $this->SendJson($response, ['status' => false,'msg' => 'Restrição: Nenhum cliente encontrado!', 'id' => null], 400);
+            return $this->SendJson($response, [
+                'status' => false,
+                'msg' => 'Restrição: Nenhum cliente encontrado!',
+                'id' => 0
+            ], 403);
         }
+        #seleciona o id do cliente CONSUMIDOR FINAL para inserir a venda
         $id_customer = $customer['id'];
-        $fieldAndvelues = [
+        $FieldAndValue = [
             'id_cliente' => $id_customer,
             'total_bruto' => 0,
             'total_liquido' => 0,
@@ -53,25 +67,108 @@ class Sale extends Base
             'observacao' => ''
         ];
         try {
-            $IsInserted = InsertQuery::insert('sale')->fields($fieldAndvelues);
+            #Tenta inserir a venda no banco de dados e captura o resultado da inserção
+            $IsInserted = InsertQuery::table('sale')->save($FieldAndValue);
+            #Verificar se a inserção falhou
             if (!$IsInserted) {
-            return $this->SendJson($response, ['status' => false,'msg' => 'Erro ao inserir venda','id' => null], 403);
+                return $this->SendJson(
+                    $response,
+                    [
+                        'status' => false,
+                        'msg' => 'Restrição: Falha ao inserir a venda!',
+                        'id' => 0
+                    ],
+                    403
+                );
             }
-            $id_sale = $sale['id'];
-            return $this->SendJson($response, ['status' => true, 'msg' => 'Venda cadastrada com sucesso!', 'id' => $id_sale], 201);
+            #Seleciona o id da venda inserida mais recente para retornar na resposta
+            $sale = SelectQuery::select('id')
+                ->from('sale')
+                ->order('id', 'desc')
+                ->limit(1)
+                ->fetch();
+            #Verificar se a venda não foi encontrada
+            if (!$sale) {
+                return $this->SendJson($response, [
+                    'status' => false,
+                    'msg' => 'Restrição: Nenhuma venda encontrada!',
+                    'id' => 0
+                ], 403);
+            }
+            $id_sale = $sale["id"];
+            return $this->SendJson($response, [
+                'status' => true,
+                'msg' => 'Venda inserida com sucesso!',
+                'id' => $id_sale
+            ], 201);
         } catch (\Exception $e) {
-            return $this->SendJson($response, ['status' => false, 'msg' => 'Restrição: ' . $e->getMessage(), 'id' => 0], 500);
+            return $this->SendJson($response, [
+                'status' => false,
+                'msg' => 'Restrição: ' . $e->getMessage(),
+                'id' => 0
+            ], 500);
         }
-
+    }
+    public function alterar($request, $response, $args)
+    {
+        $id = $args['id'];
+        $sale = SelectQuery::select()
+            ->from('sale')
+            ->where('id', '=', $id)
+            ->fetch();
+        if (!$sale) {
+            return header('location: /venda/lista');
+            die;
+        }
+        $dadosTemplate = [
+            'titulo' => 'pagina inicial',
+            'acao' => 'e',
+            'id' => $id,
+            'sale' => $sale
+        ];
+        return $this->getTwig()
+            ->render($response, $this->setView('sale'), $dadosTemplate)
+            ->withHeader('Content-Type', 'text/html')
+            ->withStatus(200);
+    }
+    public function insertItemSale($request, $response)
+    {
+        $form = $request->getParseBody();
+        $id = $form['id'] ?? null;
+        $id_produto = $form['pesquisa'];
+        if (empty($id) or is_null($id)) {
+            return $this->SendJson($response, [
+                'status' => false,
+                'msg' => 'Restrição: O ID da venda é obrigatório!',
+                'id' => 0
+            ], 403);
+        }
+        try {
+            $produto = SelectQuery::select()->from('product')->where('id', '=', $id_produto)->fetch();
+            if (!$produto) {
+                return $this->SendJson($response, [
+                    'status' => false,
+                    'msg' => 'Restrição: Produto não encontrado!',
+                    'id' => 0
+                ], 403);
+            }
+            $FieldAndValue = [
+                'id_venda' => $id,
+                'id_product' => $id_produto,
+                'quantidade' => 1,
+                'total_bruto' => $produto['valor'],
+                'total_liquido' => $produto['valor'],
+                'desconto' => 0,
+                'acrescimo' => 0,
+                'nome' => $produto['nome'],
+            ];
+            return $this->SendJson($FieldAndValue);
         } catch (\Exception $e) {
-            return $this->SendJson($response, ['status' => false,'msg' => 'Restrição: ' . $e->getMessage(),'id' => null], 500);
-        }       
-        
+            return $this->SendJson($response, [
+                'status' => false,
+                'msg' => 'Restrição: ' . $e->getMessage(),
+                'id' => 0
+            ], 500);
         }
-        return $this->SendJson($response, [
-            'status' => true,
-            'msg' => 'Venda cadastrada com sucesso!',
-            'id' => 0
-        ], 200);
     }
 }
