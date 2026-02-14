@@ -7,6 +7,16 @@ use app\database\builder\SelectQuery;
 
 class Sale extends Base
 {
+    public function lista($request, $response)
+    {
+        $dadosTemplate = [
+            'titulo' => 'Página inicial'
+        ];
+        return $this->getTwig()
+            ->render($response, $this->setView('listsale'), $dadosTemplate)
+            ->withHeader('Content-Type', 'text/html')
+            ->withStatus(200);
+    }
     public function cadastro($request, $response)
     {
         $dadosTemplate = [
@@ -18,16 +28,28 @@ class Sale extends Base
             ->withHeader('Content-Type', 'text/html')
             ->withStatus(200);
     }
-    public function lista($request, $response)
+    public function alterar($request, $response, $args)
     {
+        $id = $args['id'];
+        $sale = SelectQuery::select()
+            ->from('sale')
+            ->where('id', '=', $id)
+            ->fetch();
+        if (!$sale) {
+            return header('location: /venda/lista');
+            die;
+        }
         $dadosTemplate = [
-            'titulo' => 'Página inicial'
+            'titulo' => 'pagina inicial',
+            'acao' => 'e',
+            'id' => $id,
+            'sale' => $sale
         ];
         return $this->getTwig()
-            ->render($response, $this->setView('listsale'), $dadosTemplate)
+            ->render($response, $this->setView('sale'), $dadosTemplate)
             ->withHeader('Content-Type', 'text/html')
             ->withStatus(200);
-    }
+    }    
     public function insert($request, $response)
     {
         #captura os dados do formulário
@@ -108,29 +130,7 @@ class Sale extends Base
                 'id' => 0
             ], 500);
         }
-    }
-    public function alterar($request, $response, $args)
-    {
-        $id = $args['id'];
-        $sale = SelectQuery::select()
-            ->from('sale')
-            ->where('id', '=', $id)
-            ->fetch();
-        if (!$sale) {
-            return header('location: /venda/lista');
-            die;
-        }
-        $dadosTemplate = [
-            'titulo' => 'pagina inicial',
-            'acao' => 'e',
-            'id' => $id,
-            'sale' => $sale
-        ];
-        return $this->getTwig()
-            ->render($response, $this->setView('sale'), $dadosTemplate)
-            ->withHeader('Content-Type', 'text/html')
-            ->withStatus(200);
-    }
+    }    
     public function insertItemSale($request, $response)
     {
         $form = $request->getParseBody();
@@ -170,5 +170,9 @@ class Sale extends Base
                 'id' => 0
             ], 500);
         }
+    }
+    public function update($request, $response)
+    {
+        
     }
 }

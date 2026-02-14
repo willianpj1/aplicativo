@@ -1,5 +1,3 @@
-import { DataTables } from "./DataTables.js";
-
 const tabela = new $("#tabela").DataTable({
     paging: true,
     lengthChange: true,
@@ -17,7 +15,7 @@ const tabela = new $("#tabela").DataTable({
         searchPlaceholder: 'Digite sua pesquisa...'
     },
     ajax: {
-        url: '/user/listuser',
+        url: '/usuario/listuser',
         type: 'POST'
     },
     layout: {
@@ -65,14 +63,14 @@ const tabela = new $("#tabela").DataTable({
 async function Delete(id) {
     const formData = new FormData();
     formData.append('id', id);
-    
+
     const response = await fetch('/usuario/delete', {
         method: 'POST',
         body: formData
     });
-    
+
     const data = await response.json();
-    
+
     if (!data.status) {
         Swal.fire({
             title: "Erro ao remover!",
@@ -99,4 +97,3 @@ async function Delete(id) {
     tabela.ajax.reload();
 }
 window.Delete = Delete;
-DataTables.SetId('tabela').Post('/user/listuser');

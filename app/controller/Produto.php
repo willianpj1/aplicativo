@@ -42,26 +42,6 @@ class Produto extends Base
             ->withHeader('Content-Type', 'text/html')
             ->withStatus(200);
     }
-      public function listproductdata($request, $response)
-    {
-        $form = $request->getParsedBody();
-        $term = $form['term'] ?? null;
-        $query = SelectQuery::select('id, codigo_barra, nome')->from('product');
-        if ($term != null) {
-            $query->where('codigo_barra', 'ILIKE', "%{$term}%", 'or')
-                ->where('nome', 'ILIKE', "%{$term}%");
-        }
-        $data = [];
-        $results = $query->fetchAll();
-        foreach ($results as $key => $item) {
-            $data['results'][$key] = [
-                'id' => $item['id'],
-                'text' => $item['nome'] . ' - Cód. barra: ' . $item['codigo_barra']
-            ];
-        }
-        #$data['pagination'] = ['more' => true];
-        return $this->SendJson($response, $data);
-    }
     public function alterar($request, $response, $args)
     {
         $id = $args['id'] ?? null;
@@ -105,6 +85,71 @@ class Produto extends Base
             ->render($response, $this->setView('product'), $dadosTemplate)
             ->withHeader('Content-Type', 'text/html')
             ->withStatus(200);
+    }
+    public function listproductdata($request, $response)
+    {
+        $form = $request->getParsedBody();
+        $term = $form['term'] ?? null;
+        $query = SelectQuery::select('id, codigo_barra, nome')->from('product');
+        if ($term != null) {
+            $query->where('codigo_barra', 'ILIKE', "%{$term}%", 'or')
+                ->where('nome', 'ILIKE', "%{$term}%");
+        }
+        $data = [];
+        $results = $query->fetchAll();
+        foreach ($results as $key => $item) {
+            $data['results'][$key] = [
+                'id' => $item['id'],
+                'text' => $item['nome'] . ' - Cód. barra: ' . $item['codigo_barra']
+            ];
+        }
+        #$data['pagination'] = ['more' => true];
+        return $this->SendJson($response, $data);
+    }
+    public function insert($request, $response)
+    {
+        try {
+            $form = $request->getParsedBody();
+
+            $FieldsAndValues = [
+                'supplier_id' => $form['supplier_id'],
+                'nome' => $form['nome'],
+                'codigo_barras' => $form['codigo_barras'],
+                'descricao_curta' => $form['descricao_curta'],
+                'descricao' => $form['descricao'],
+                'preco_custo' => $form['preco_custo'],
+                'preco_venda' => $form['preco_venda'],
+                'ativo' => ($form['ativo']),
+                'excluido' => ($form['excluido'])
+            ];
+
+            $IsSave = InsertQuery::table('product')->save($FieldsAndValues);
+
+            if (!$IsSave) {
+                return $this->SendJson($response, [
+                    'status' => false,
+                    'msg' => 'Erro ao inserir produto',
+                    'id' => 0
+                ], 200);
+            }
+
+            $id = SelectQuery::select('id')
+                ->from('product')
+                ->order('id', 'desc')
+                ->fetch();
+
+            return $this->SendJson($response, [
+                'status' => true,
+                'msg' => 'Produto cadastrado com sucesso!',
+                'id' => $id['id'] ?? 0
+            ], 200);
+        } catch (\Throwable $th) {
+            return $this->SendJson($response, [
+                'status' => false,
+                'msg' => 'Exceção: ' . $th->getMessage(),
+                'id' => 0
+            ], 500);
+        }
     }
     public function delete($request, $response)
     {
@@ -178,51 +223,6 @@ class Produto extends Base
             return $this->SendJson($response, [
                 'status' => false,
                 'msg' => 'Exceção: ' . $e->getMessage(),
-                'id' => 0
-            ], 500);
-        }
-    }
-    public function insert($request, $response)
-    {
-        try {
-            $form = $request->getParsedBody();
-
-            $FieldsAndValues = [
-                'supplier_id' => $form['supplier_id'],
-                'nome' => $form['nome'],
-                'codigo_barras' => $form['codigo_barras'],
-                'descricao_curta' => $form['descricao_curta'],
-                'descricao' => $form['descricao'],
-                'preco_custo' => $form['preco_custo'],
-                'preco_venda' => $form['preco_venda'],
-                'ativo' => ($form['ativo']),
-                'excluido' => ($form['excluido'])
-            ];
-
-            $IsSave = InsertQuery::table('product')->save($FieldsAndValues);
-
-            if (!$IsSave) {
-                return $this->SendJson($response, [
-                    'status' => false,
-                    'msg' => 'Erro ao inserir produto',
-                    'id' => 0
-                ], 200);
-            }
-
-            $id = SelectQuery::select('id')
-                ->from('product')
-                ->order('id', 'desc')
-                ->fetch();
-
-            return $this->SendJson($response, [
-                'status' => true,
-                'msg' => 'Produto cadastrado com sucesso!',
-                'id' => $id['id'] ?? 0
-            ], 200);
-        } catch (\Throwable $th) {
-            return $this->SendJson($response, [
-                'status' => false,
-                'msg' => 'Exceção: ' . $th->getMessage(),
                 'id' => 0
             ], 500);
         }

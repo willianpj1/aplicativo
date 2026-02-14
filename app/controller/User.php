@@ -35,7 +35,7 @@ class User extends Base
     public function alterar($request, $response, $args)
     {
         $id = $args['id'] ?? null;
-        
+
         // Validar se o ID é válido
         if (!$id || !is_numeric($id)) {
             $dadosTemplate = [
@@ -49,7 +49,7 @@ class User extends Base
                 ->withHeader('Content-Type', 'text/html')
                 ->withStatus(200);
         }
-        
+
         $usuario = SelectQuery::select()->from('users')->where('id', '=', $id)->fetch();
         $dadosTemplate = [
             'acao' => 'e',
@@ -67,15 +67,13 @@ class User extends Base
         #Captura todas a variaveis de forma mais segura VARIAVEIS POST.
         $form = $request->getParsedBody();
         #Qual a coluna da tabela deve ser ordenada.
-        $order = ($form['order'][0]['column'])
-            ? $form['order'][0]['column']
-            : 0;
+        $order = $form['order'][0]['column'] ?? 0;
         #Tipo de ordenação
         $orderType = $form['order'][0]['dir'] ?? 'desc';
         #Em qual registro se inicia o retorno dos registro, OFFSET
-        $start = $form['start'];
+        $start = $form['start'] ?? 0;
         #Limite de registro a serem retornados do banco de dados LIMIT
-        $length = $form['length'];
+        $length = $form['length'] ?? 10;
         $fields = [
             0 => 'id',
             1 => 'nome',
@@ -95,8 +93,7 @@ class User extends Base
                 ->where('users.rg', 'ilike', "%{$term}%");
         }
 
-        $users = $query
-            ->order($orderField, $orderType)
+        $users = $query->order($orderField, $orderType)
             ->limit($length, $start)
             ->fetchAll();
 
@@ -119,13 +116,7 @@ class User extends Base
             'data' => $userData
         ];
 
-        $payload = json_encode($data);
-
-        $response->getBody()->write($payload);
-
-        return $response
-            ->withHeader('Content-Type', 'application/json')
-            ->withStatus(200);
+        return $this->SendJson($response, $data);
     }
     public function insert($request, $response)
     {
@@ -252,11 +243,9 @@ class User extends Base
             return $this->SendJson($response, $data, 500);
         }
     }
-        public function print($request, $response)
+    public function print($request, $response)
     {
         $html = $this->getHtml('reportuser.html');
         return $this->printer($html);
     }
 }
-
-
