@@ -13,12 +13,7 @@ final class Sale extends AbstractMigration
               ->addColumn('id_customer', 'biginteger', ['null' => true])
               ->addColumn('id_user', 'biginteger', ['null' => true])
               ->addColumn('total_bruto', 'decimal',['precision' => 18, 'scale' => 4, 'null' => true])
-              ->addColumn('total_liquido', 'decimal', [
-                'precision' => 18, 
-                'scale' => 4, 
-                'null' => true,
-                'comment' => "Valor a ser pago pelo cliente"
-            ])
+              ->addColumn('total_liquido', 'decimal', ['precision' => 18, 'scale' => 4, 'null' => true, 'comment' => "Valor a ser pago pelo cliente"])
               ->addColumn('desconto', 'decimal', ['precision' => 18, 'scale' => 4, 'null' => true])
               ->addColumn('acrescimo', 'decimal', ['precision' => 18, 'scale' => 4, 'null' => true])
               ->addColumn('observacao', 'text', ['null' => true])
