@@ -6,7 +6,7 @@ use Phinx\Migration\AbstractMigration;
 
 final class Supplier extends AbstractMigration
 {
-   
+
     public function change(): void
     {
         $table = $this->table('supplier', ['id' => false, 'primary_key' => ['id']]);
@@ -18,6 +18,6 @@ final class Supplier extends AbstractMigration
             ->addColumn('ativo', 'boolean', ['null' => true])
             ->addColumn('data_cadastro', 'datetime', ['null' => true, 'default' => 'CURRENT_TIMESTAMP'])
             ->addColumn('data_atualizacao', 'datetime', ['null' => true, 'default' => 'CURRENT_TIMESTAMP'])
-         ->create();
+            ->create();
     }
 }

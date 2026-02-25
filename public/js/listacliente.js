@@ -1,5 +1,5 @@
-
 import { Requests } from "./Requests.js";
+
 const tabela = new $('#tabela').DataTable({
     paging: true,
     lengthChange: true,
@@ -14,13 +14,14 @@ const tabela = new $('#tabela').DataTable({
     serverSide: true,
     language: {
         url: 'https://cdn.datatables.net/plug-ins/1.13.4/i18n/pt-BR.json',
-        searchPlaceholder: 'Digite sua pesquisa...',
+        searchPlaceholder: 'Digite sua pesquisa...'
     },
     ajax: {
-        url: '/cliente/listacliente',
+        url: '/cliente/listcliente',
         type: 'POST'
     }
 });
+
 async function Delete(id) {
     document.getElementById('id').value = id;
     const response = await Requests.SetForm('form').Post('/cliente/delete');
@@ -38,7 +39,7 @@ async function Delete(id) {
         return;
     }
     Swal.fire({
-        title: "Removido com sucesso!",
+        title: "Removido com sucesso!!",
         icon: "success",
         html: response.msg,
         timer: 3000,
@@ -46,13 +47,7 @@ async function Delete(id) {
         didOpen: () => {
             Swal.showLoading();
         }
-    });
+    });         
     tabela.ajax.reload();
 }
-async function Editar(id) {
-    document.getElementById('id').value = id;
-    $('#editar').modal('show');
-    //const response = await Requests.SetForm('form').Post('/cliente/update');
-}
 window.Delete = Delete;
-window.Editar = Editar;

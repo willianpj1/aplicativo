@@ -15,7 +15,6 @@ final class StockMovement extends AbstractMigration
             ->addColumn('id_produto', 'biginteger', ['null' => true])
             ->addColumn('quantidade_entrada', 'decimal', ['precision' => 18, 'scale' => 4, 'null' => true])
             ->addColumn('quantidade_saida', 'decimal', ['precision' => 18, 'scale' => 4, 'null' => true])
-            ->addColumn('estoque_atual', 'decimal', ['precision' => 18, 'scale' => 4, 'null' => true])
             ->addColumn('observacao', 'text', ['null' => true])
             ->addColumn('data_cadastro', 'datetime', ['null' => true, 'default' => 'CURRENT_TIMESTAMP'])
             ->addColumn('data_atualizacao', 'datetime', ['null' => true, 'default' => 'CURRENT_TIMESTAMP'])

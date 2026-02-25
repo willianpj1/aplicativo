@@ -19,6 +19,6 @@ final class Company extends AbstractMigration
             ->addColumn('ativo', 'boolean', ['null' => true])
             ->addColumn('data_cadastro', 'datetime', ['null' => true, 'default' => 'CURRENT_TIMESTAMP'])
             ->addColumn('data_atualizacao', 'datetime', ['null' => true, 'default' => 'CURRENT_TIMESTAMP'])
-         ->create();
+            ->create();
     }
 }

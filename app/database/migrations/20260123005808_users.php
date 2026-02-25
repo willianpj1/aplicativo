@@ -11,10 +11,11 @@ final class Users extends AbstractMigration
         $table = $this->table('users', ['id' => false, 'primary_key' => ['id']]);
         $table->addColumn('id', 'biginteger', ['identity' => true, 'null' => false])
             ->addColumn('nome', 'text', ['null' => true])
+            ->addColumn('senha', 'text', ['null' => true])
+            ->addColumn('salario', 'decimal', ['null' => true, 'default' => 0, 'precision' => 18, 'scale' => 4])
             ->addColumn('sobrenome', 'text', ['null' => true])
             ->addColumn('rg', 'text', ['null' => true])
             ->addColumn('cpf', 'text', ['null' => true])
-            ->addColumn('senha', 'string', ['limit' => 60, 'null' => false])
             ->addColumn('ativo', 'boolean', ['null' => true])
             ->addColumn('administrador', 'boolean', ['null' => true])
             ->addColumn('data_cadastro', 'datetime', ['null' => true, 'default' => 'CURRENT_TIMESTAMP'])

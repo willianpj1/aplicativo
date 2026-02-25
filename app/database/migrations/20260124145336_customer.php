@@ -6,6 +6,7 @@ use Phinx\Migration\AbstractMigration;
 
 final class Customer extends AbstractMigration
 {
+   
     public function change(): void
     {
         $table = $this->table('customer', ['id' => false, 'primary_key' => ['id']]);

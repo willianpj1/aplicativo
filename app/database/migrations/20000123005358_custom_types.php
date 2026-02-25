@@ -21,6 +21,12 @@ final class CustomTypes extends AbstractMigration
                 'INVENTARIO',
                 'TRANSFERENCIA'
             );
+
+            CREATE TYPE stock_movement_venda AS ENUM (
+                'PRE_VENDA',
+                'ORCAMENTO',
+                'VENDA'
+            );
             
         ");
     }
