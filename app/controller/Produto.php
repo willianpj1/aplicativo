@@ -105,7 +105,7 @@ class Produto extends Base
                 ->where('nome', 'ilike', "%{$term}%", 'or')
                 ->where('descricao_curta', 'ilike', "%{$term}%", 'or')
                 ->where('codigo_barra', 'ilike', "%{$term}%", 'or')
-                ->where('valor', 'ilike', "%{$term}%", 'or');        
+                ->where('valor', 'ilike', "%{$term}%", 'or');
         }
         $product = $query
             ->order($orderField, $orderType)
@@ -120,13 +120,36 @@ class Produto extends Base
                 $value['codigo_barra'],
                 $value['valor'],
                 "<div class='d-flex gap-2'>
-    <a href='/produto/alterar/{$value['id']}' class='btn btn-warning btn-sm px-2 shadow-sm' style='white-space: nowrap; font-weight: 500;'>
-        <i class='bi bi-pencil-square'></i> Alterar
-    </a>
-    <button type='button' onclick='Delete({$value['id']});' class='btn btn-danger btn-sm px-2 shadow-sm' style='white-space: nowrap; font-weight: 500;'>
-        <i class='bi bi-trash-fill'></i> Excluir
-    </button>
-</div>"
+                    <a href='/produto/alterar/{$value['id']}' class='btn btn-warning btn-sm px-2 shadow-sm' style='white-space: nowrap; font-weight: 500;'>
+                        <i class='bi bi-pencil-square'></i> Alterar
+                    </a>
+                        <button type='button' onclick='Delete({$value['id']});' class='btn btn-danger btn-sm px-2 shadow-sm' style='white-space: nowrap; font-weight: 500;'>
+                            <i class='bi bi-trash-fill'></i> Excluir
+                        </button>
+                    </a>
+                        <div class='d-flex gap-2'>
+                    <button type='button' class='btn btn-primary btn-sm px-2 shadow-sm' style='white-space: nowrap; font-weight: 500;' data-bs-toggle='modal' data-bs-target='#modalstock'>
+                        <i class='bi bi-plus-circle'></i> Ajustar
+                    </button>
+
+                <div class='modal fade' id='modalstock' tabindex='-1' aria-labelledby='exampleModalLabel' aria-hidden='true'>
+                    <div class='modal-dialog'>
+                        <div class='modal-content'>
+                            <div class='modal-header'>
+                                <h1 class='modal-title fs-5' id='exampleModalLabel'>Ajustar Estoque</h1>
+                                    <button type='button' class='btn-close' data-bs-dismiss='modal' aria-label='Close'></button>
+                        </div>
+                            <div class='modal-body'>
+                                ...
+                            </div>
+                            <div class='modal-footer'>
+                            <button type='button' class='btn btn-secondary' data-bs-dismiss='modal'>Fechar</button>
+                            <button type='button' class='btn btn-primary'>Salvar</button>
+                        </div>
+                    </div>
+                </div>       
+            </div>
+                 </div>"
             ];
         }
         $data = [
